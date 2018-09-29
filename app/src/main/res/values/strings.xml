@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">News Feed</string>
+    <string name="no_internet_connection">No internet connection.</string>
+    <string name="no_newsfeed">No News feeds</string>
+    <string name="menu_refresh">refresh</string>
+    <string name="loading_more_text">Loading more news</string>
+    <string name="news_image_discription">News Image</string>
+</resources>
