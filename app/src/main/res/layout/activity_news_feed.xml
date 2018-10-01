@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/swiperefresh"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swiperefresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -17,55 +17,55 @@
             android:divider="@null"
             android:dividerHeight="@dimen/list_divider_height"
             android:orientation="vertical" />
+    </android.support.v4.widget.SwipeRefreshLayout>
 
-        <!-- Empty view is only visible when the list has no items. -->
-        <TextView
-            android:id="@+id/empty_view"
-            android:layout_width="wrap_content"
+    <!-- Empty view is only visible when the list has no items. -->
+    <TextView
+        android:id="@+id/empty_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:textAppearance="?android:textAppearanceMedium" />
+
+    <!-- Loading indicator  -->
+    <ProgressBar
+        android:id="@+id/loading_indicator"
+        style="@style/Widget.AppCompat.ProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" />
+
+    <RelativeLayout
+        android:id="@+id/loading_more_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:textAppearance="?android:textAppearanceMedium" />
+            android:layout_marginBottom="@dimen/loading_more_margin_bottom"
+            android:orientation="vertical">
 
-        <!-- Loading indicator  -->
-        <ProgressBar
-            android:id="@+id/loading_indicator"
-            style="@style/Widget.AppCompat.ProgressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true" />
-
-        <RelativeLayout
-            android:id="@+id/loading_more_indicator"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:visibility="gone">
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            <ProgressBar
+                style="@style/Widget.AppCompat.ProgressBar"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/loading_more_margin_bottom"
-                android:orientation="vertical">
+                android:layout_gravity="center_horizontal" />
 
-                <ProgressBar
-                    style="@style/Widget.AppCompat.ProgressBar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="@string/loading_more_text"
-                    android:textColor="@android:color/black"
-                    android:textStyle="bold|italic"
-                    android:textSize="@dimen/loading_more_text_size" />
-            </LinearLayout>
-
-        </RelativeLayout>
-
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/loading_more_text"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/loading_more_text_size"
+                android:textStyle="bold|italic" />
+        </LinearLayout>
 
     </RelativeLayout>
-</android.support.v4.widget.SwipeRefreshLayout>
+
+
+</RelativeLayout>

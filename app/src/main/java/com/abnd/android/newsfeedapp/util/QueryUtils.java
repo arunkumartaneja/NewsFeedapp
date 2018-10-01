@@ -76,7 +76,7 @@ public final class QueryUtils {
 
             // If the request was successful (response code 200),
             // then read the input stream and parse the response.
-            if (urlConnection.getResponseCode() == 200) {
+            if (urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
                 inputStream = urlConnection.getInputStream();
                 jsonResponse = readFromStream(inputStream);
             } else {
@@ -117,6 +117,7 @@ public final class QueryUtils {
             String pillar;
             String thumbnail;
             Bitmap bitmap;
+            String author;
 
             for (int i = 0; i < results.length(); i++) {
                 result = results.getJSONObject(i);
@@ -126,6 +127,7 @@ public final class QueryUtils {
                 webUrl = result.getString("webUrl");
                 pillar = result.getString("pillarName");
                 thumbnail = result.getJSONObject("fields").getString("thumbnail");
+                author = result.getJSONObject("fields").getString("byline");
 
                 try {
                     InputStream in = new java.net.URL(thumbnail).openStream();
@@ -134,7 +136,7 @@ public final class QueryUtils {
                     bitmap = null;
                 }
 
-                news.add(new News(title, date, webUrl, section, pillar, bitmap));
+                news.add(new News(title, date, webUrl, section, pillar, bitmap, author));
             }
         } catch (JSONException e) {
             Log.e(LOG_TAG, "Problem parsing the news JSON results", e);

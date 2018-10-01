@@ -30,6 +30,16 @@
                     android:id="@+id/news_section"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="start"
+                    android:textColor="@android:color/black" />
+
+                <TextView
+                    android:id="@+id/news_publish_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:gravity="end"
                     android:textColor="@android:color/black" />
             </LinearLayout>
 
@@ -48,25 +58,17 @@
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/news_title_text_size" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/news_pillar"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:textColor="@android:color/black" />
 
-                <TextView
-                    android:id="@+id/news_pillar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textColor="@android:color/black" />
-
-                <TextView
-                    android:id="@+id/news_publish_date"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:textColor="@android:color/black" />
-            </LinearLayout>
+            <TextView
+                android:id="@+id/news_author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black" />
 
         </LinearLayout>
 

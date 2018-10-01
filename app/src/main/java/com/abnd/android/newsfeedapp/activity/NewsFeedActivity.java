@@ -33,7 +33,7 @@ public class NewsFeedActivity extends AppCompatActivity implements LoaderManager
 
     private static final int NEWS_FEED_LOADER_ID = 1;
 
-    private static final String NEWS_FEED_URL = "https://content.guardianapis.com/search?api-key=ba7a5ca7-2605-46a0-8578-3ebc1536ba01&show-fields=thumbnail";
+    private static final String NEWS_FEED_URL = "https://content.guardianapis.com/search?api-key=ba7a5ca7-2605-46a0-8578-3ebc1536ba01&show-fields=thumbnail,byline";
 
     private NewsFeedAdapter mAdapter;
     private int pageSize = 5;

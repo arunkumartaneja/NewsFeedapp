@@ -49,6 +49,7 @@ public class NewsFeedAdapter extends ArrayAdapter<News> {
             holder.sectionView.setText(news.getSection());
             holder.pillarView.setText(news.getPillar());
             holder.thumbnailView.setImageBitmap(news.getThumbnail());
+            holder.authorView.setText("Author: " + news.getAuthor());
         }
 
         return convertView;
@@ -81,6 +82,7 @@ public class NewsFeedAdapter extends ArrayAdapter<News> {
         private TextView pillarView;
         private TextView sectionView;
         private ImageView thumbnailView;
+        private TextView authorView;
 
         ViewHolder(View view) {
             titleView = view.findViewById(R.id.news_title);
@@ -88,6 +90,7 @@ public class NewsFeedAdapter extends ArrayAdapter<News> {
             pillarView = view.findViewById(R.id.news_pillar);
             sectionView = view.findViewById(R.id.news_section);
             thumbnailView = view.findViewById(R.id.news_thumbnail);
+            authorView = view.findViewById(R.id.news_author);
         }
     }
 }
