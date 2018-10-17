@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/settings_title">
+
+    <PreferenceCategory android:title="@string/setting_general_title">
+        <EditTextPreference
+            android:defaultValue="@string/settings_page_size_default"
+            android:inputType="numberDecimal"
+            android:key="@string/settings_page_size_key"
+            android:selectAllOnFocus="true"
+            android:title="@string/settings_page_size_label" />
+
+        <ListPreference
+            android:defaultValue="@string/settings_order_by_default"
+            android:entries="@array/settings_order_by_labels"
+            android:entryValues="@array/settings_order_by_values"
+            android:key="@string/settings_order_by_key"
+            android:title="@string/settings_order_by_label" />
+
+        <SwitchPreference
+            android:defaultValue="@string/settings_show_image_default"
+            android:key="@string/settings_show_image_key"
+            android:title="@string/settings_show_image_label" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/setting_general_theme">
+        <SwitchPreference
+            android:defaultValue="@string/setting_auto_night_mode_default_value"
+            android:key="@string/setting_auto_night_mode_key"
+            android:summary="@string/setting_auto_night_mode_summary"
+            android:title="@string/setting_auto_night_mode_title" />
+
+        <SwitchPreference
+            android:defaultValue="@string/setting_night_mode_default_value"
+            android:key="@string/setting_night_mode_key"
+            android:title="@string/setting_night_mode_title" />
+    </PreferenceCategory>
+
+
+</PreferenceScreen>

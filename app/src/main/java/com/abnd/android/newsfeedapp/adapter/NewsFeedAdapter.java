@@ -22,6 +22,10 @@ import java.util.TimeZone;
 
 public class NewsFeedAdapter extends ArrayAdapter<News> {
 
+    private static final String API_Date_Pattern = "yyyy-MM-dd'T'kk:mm:ss'Z'";
+    private static final String APP_Date_Pattern = "dd MMM yyyy hh:mm a";
+    private static final String UTC = "UTC";
+
     public NewsFeedAdapter(Context context, List<News> newsList) {
         super(context, 0, newsList);
     }
@@ -48,7 +52,11 @@ public class NewsFeedAdapter extends ArrayAdapter<News> {
             holder.dateView.setText(formatDate(news.getDate()));
             holder.sectionView.setText(news.getSection());
             holder.pillarView.setText(news.getPillar());
-            holder.thumbnailView.setImageBitmap(news.getThumbnail());
+            if (news.getThumbnail() != null) {
+                holder.thumbnailView.setImageBitmap(news.getThumbnail());
+            } else {
+                holder.thumbnailView.setImageResource(R.drawable.no_image);
+            }
             holder.authorView.setText("Author: " + news.getAuthor());
         }
 
@@ -59,14 +67,15 @@ public class NewsFeedAdapter extends ArrayAdapter<News> {
         Date date = null;
         SimpleDateFormat simpleDateFormat;
         try {
-            simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'kk:mm:ss'Z'", Locale.ENGLISH);
-            simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+//            simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'kk:mm:ss'Z'", Locale.ENGLISH);
+            simpleDateFormat = new SimpleDateFormat(API_Date_Pattern, Locale.ENGLISH);
+            simpleDateFormat.setTimeZone(TimeZone.getTimeZone(UTC));
             date = simpleDateFormat.parse(dateString);
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
-        simpleDateFormat = new SimpleDateFormat("dd, MMM yyyy hh:mm a");
+        simpleDateFormat = new SimpleDateFormat(APP_Date_Pattern);
         simpleDateFormat.setTimeZone(TimeZone.getDefault());
         return simpleDateFormat.format(date);
     }

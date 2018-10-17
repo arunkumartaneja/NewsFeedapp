@@ -1,8 +1,41 @@
 <resources>
     <string name="app_name">News Feed</string>
     <string name="no_internet_connection">No internet connection.</string>
-    <string name="no_newsfeed">No News feeds</string>
+    <string name="no_news_feed">No News feeds</string>
     <string name="menu_refresh">refresh</string>
     <string name="loading_more_text">Loading more news</string>
-    <string name="news_image_discription">News Image</string>
+    <string name="news_image_description">News Image</string>
+
+    <string name="settings_menu_item">Settings</string>
+    <string name="settings_title">News Settings</string>
+
+    <string name="settings_page_size_label">Page Size</string>
+    <string name="settings_page_size_key" translatable="false">page_size</string>
+    <string name="settings_page_size_default" translatable="false">5</string>
+
+    <!-- Strings Preference -->
+    <string name="settings_order_by_label">Order By</string>
+    <string name="settings_order_by_key" translatable="false">order_by</string>
+    <string name="settings_order_by_default" translatable="false">@string/settings_order_by_newest_value</string>
+    <string name="settings_order_by_newest_label">Newest</string>
+    <string name="settings_order_by_newest_value" translatable="false">newest</string>
+    <string name="settings_order_by_oldest_label">Oldest</string>
+    <string name="settings_order_by_oldest_value" translatable="false">oldest</string>
+    <string name="settings_order_by_relevance_label">Relevance</string>
+    <string name="settings_order_by_relevance_value" translatable="false">relevance</string>
+
+
+    <string name="setting_general_title">General</string>
+    <string name="setting_general_theme">Theme</string>
+
+    <string name="setting_auto_night_mode_title">Auto Night Mode</string>
+    <string name="setting_auto_night_mode_key" translatable="false">auto_night_mode</string>
+    <string name="setting_auto_night_mode_default_value" translatable="false">false</string>
+    <string name="setting_auto_night_mode_summary">Automatically toggle night mode depending on time</string>
+    <string name="setting_night_mode_default_value" translatable="false">false</string>
+    <string name="setting_night_mode_key" translatable="false">night_mode</string>
+    <string name="setting_night_mode_title">Enable Night Mode</string>
+    <string name="settings_show_image_default">true</string>
+    <string name="settings_show_image_label">Show Image</string>
+    <string name="settings_show_image_key">show_image</string>
 </resources>

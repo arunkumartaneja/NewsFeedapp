@@ -27,6 +27,10 @@ import java.util.List;
  */
 public final class QueryUtils {
 
+    private final static Integer READ_TIME_OUT = 10000;
+    private final static Integer CONNECT_TIME_OUT = 15000;
+    private final static String GET = "GET";
+
     /**
      * Tag for the log messages
      */
@@ -35,13 +39,6 @@ public final class QueryUtils {
     public static List<News> fetchNewsFeeds(String requestUrl) {
         // Create URL object
         URL url = createUrl(requestUrl);
-
-        // delay to show loading image
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
         // Perform HTTP request to the URL and receive a JSON response back
         String jsonResponse = null;
@@ -69,9 +66,9 @@ public final class QueryUtils {
         InputStream inputStream = null;
         try {
             urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setReadTimeout(10000 /* milliseconds */);
-            urlConnection.setConnectTimeout(15000 /* milliseconds */);
-            urlConnection.setRequestMethod("GET");
+            urlConnection.setReadTimeout(READ_TIME_OUT /* milliseconds */);
+            urlConnection.setConnectTimeout(CONNECT_TIME_OUT /* milliseconds */);
+            urlConnection.setRequestMethod(GET);
             urlConnection.connect();
 
             // If the request was successful (response code 200),
@@ -114,10 +111,12 @@ public final class QueryUtils {
             String title;
             String date;
             String webUrl;
-            String pillar;
             String thumbnail;
-            Bitmap bitmap;
-            String author;
+            JSONObject fields;
+            String pillar = null;
+            Bitmap bitmap = null;
+            String author = null;
+
 
             for (int i = 0; i < results.length(); i++) {
                 result = results.getJSONObject(i);
@@ -125,15 +124,25 @@ public final class QueryUtils {
                 date = result.getString("webPublicationDate");
                 title = result.getString("webTitle");
                 webUrl = result.getString("webUrl");
-                pillar = result.getString("pillarName");
-                thumbnail = result.getJSONObject("fields").getString("thumbnail");
-                author = result.getJSONObject("fields").getString("byline");
 
-                try {
-                    InputStream in = new java.net.URL(thumbnail).openStream();
-                    bitmap = BitmapFactory.decodeStream(in);
-                } catch (Exception e) {
-                    bitmap = null;
+                if (result.has("pillarName")) {
+                    pillar = result.getString("pillarName");
+                }
+
+                if (result.has("fields")) {
+                    fields = result.getJSONObject("fields");
+                    if (fields.has("thumbnail")) {
+                        thumbnail = fields.getString("thumbnail");
+                        try {
+                            InputStream in = new java.net.URL(thumbnail).openStream();
+                            bitmap = BitmapFactory.decodeStream(in);
+                        } catch (Exception e) {
+                            Log.e(LOG_TAG, "Problem while getting news image", e);
+                        }
+                    }
+                    if (fields.has("byline")) {
+                        author = fields.getString("byline");
+                    }
                 }
 
                 news.add(new News(title, date, webUrl, section, pillar, bitmap, author));

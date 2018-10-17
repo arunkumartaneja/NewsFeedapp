@@ -28,47 +28,37 @@
 
                 <TextView
                     android:id="@+id/news_section"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    style="@style/TextViewStyle"
                     android:layout_weight="1"
-                    android:gravity="start"
-                    android:textColor="@android:color/black" />
+                    android:gravity="start"/>
 
                 <TextView
                     android:id="@+id/news_publish_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    style="@style/TextViewStyle"
                     android:layout_weight="2"
-                    android:gravity="end"
-                    android:textColor="@android:color/black" />
+                    android:gravity="end"/>
             </LinearLayout>
 
             <ImageView
                 android:id="@+id/news_thumbnail"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/news_image_height"
-                android:contentDescription="@string/news_image_discription"
+                android:contentDescription="@string/news_image_description"
                 android:scaleType="centerCrop" />
 
 
             <TextView
                 android:id="@+id/news_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/black"
+                style="@style/TextViewStyle"
                 android:textSize="@dimen/news_title_text_size" />
 
             <TextView
                 android:id="@+id/news_pillar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/black" />
+                style="@style/TextViewStyle" />
 
             <TextView
                 android:id="@+id/news_author"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/black" />
+                style="@style/TextViewStyle" />
 
         </LinearLayout>
 

@@ -4,12 +4,15 @@ import android.app.LoaderManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatDelegate;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,10 +36,10 @@ public class NewsFeedActivity extends AppCompatActivity implements LoaderManager
 
     private static final int NEWS_FEED_LOADER_ID = 1;
 
-    private static final String NEWS_FEED_URL = "https://content.guardianapis.com/search?api-key=ba7a5ca7-2605-46a0-8578-3ebc1536ba01&show-fields=thumbnail,byline";
+    private static final String NEWS_FEED_URL = "https://content.guardianapis.com/search?api-key=ba7a5ca7-2605-46a0-8578-3ebc1536ba01";
 
     private NewsFeedAdapter mAdapter;
-    private int pageSize = 5;
+    private Integer pageSize;
     private boolean loadingMore = false;
 
     @BindView(R.id.loading_more_indicator) View loadingMoreIndicator;
@@ -50,6 +53,13 @@ public class NewsFeedActivity extends AppCompatActivity implements LoaderManager
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_feed);
         ButterKnife.bind(this);
+
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        setTheme(sharedPrefs);
+
+        pageSize = Integer.valueOf(sharedPrefs.getString(
+                getString(R.string.settings_page_size_key),
+                getString(R.string.settings_page_size_default)));
 
         newsFeedListView.setEmptyView(mEmptyStateTextView);
 
@@ -107,6 +117,25 @@ public class NewsFeedActivity extends AppCompatActivity implements LoaderManager
 
     }
 
+    private void setTheme(SharedPreferences sharedPrefs) {
+        boolean isNightModeOn = sharedPrefs.getBoolean(
+                getString(R.string.setting_night_mode_key),
+                Boolean.valueOf(getString(R.string.setting_night_mode_default_value)));
+
+        if (isNightModeOn) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            boolean isAutoNightModeOn = sharedPrefs.getBoolean(
+                    getString(R.string.setting_auto_night_mode_key),
+                    Boolean.valueOf(getString(R.string.setting_auto_night_mode_default_value)));
+            if (isAutoNightModeOn) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO);
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            }
+        }
+    }
+
     private void refreshNewsFeed(boolean isRefreshEvent) {
         // Get a reference to the ConnectivityManager to check state of network connectivity
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -145,6 +174,10 @@ public class NewsFeedActivity extends AppCompatActivity implements LoaderManager
                 swipeRefreshLayout.setRefreshing(true);
                 refreshNewsFeed(true);
                 return true;
+            case R.id.action_settings:
+                Intent settingsIntent = new Intent(this, SettingsActivity.class);
+                startActivity(settingsIntent);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -152,8 +185,38 @@ public class NewsFeedActivity extends AppCompatActivity implements LoaderManager
 
     @Override
     public Loader<List<News>> onCreateLoader(int id, Bundle args) {
-        String url = NEWS_FEED_URL + "&page-size=" + pageSize;
-        return new NewsFeedLoader(this, url);
+
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        // getString retrieves a String value from the preferences. The second parameter is the default value for this preference.
+        pageSize = Integer.valueOf(sharedPrefs.getString(
+                getString(R.string.settings_page_size_key),
+                getString(R.string.settings_page_size_default)));
+
+        String orderBy = sharedPrefs.getString(
+                getString(R.string.settings_order_by_key),
+                getString(R.string.settings_order_by_default));
+
+        boolean showImage = sharedPrefs.getBoolean(
+                getString(R.string.settings_show_image_key),
+                Boolean.valueOf(getString(R.string.settings_show_image_default)));
+
+        // parse breaks apart the URI string that's passed into its parameter
+        Uri baseUri = Uri.parse(NEWS_FEED_URL);
+
+        // buildUpon prepares the baseUri that we just parsed so we can add query parameters to it
+        Uri.Builder uriBuilder = baseUri.buildUpon();
+
+        // Append query parameter and its value.
+        uriBuilder.appendQueryParameter("page-size", pageSize.toString());
+        uriBuilder.appendQueryParameter("order-by", orderBy);
+        if (showImage) {
+            uriBuilder.appendQueryParameter("show-fields", "thumbnail,byline");
+        } else {
+            uriBuilder.appendQueryParameter("show-fields", "byline");
+        }
+
+        return new NewsFeedLoader(this, uriBuilder.toString());
     }
 
     @Override
@@ -162,14 +225,17 @@ public class NewsFeedActivity extends AppCompatActivity implements LoaderManager
         loadingIndicator.setVisibility(View.GONE);
 
         // Set empty state text to display "No News feeds."
-        mEmptyStateTextView.setText(R.string.no_newsfeed);
+        mEmptyStateTextView.setText(R.string.no_news_feed);
 
         swipeRefreshLayout.setRefreshing(false);
 
         if (loadingMore) {
             loadingMore = false;
             loadingMoreIndicator.setVisibility(View.GONE);
-            mAdapter.addAll(data.subList(data.size() - 5, data.size() - 1));
+            if  (data.size() >= 5) {
+                mAdapter.addAll(data.subList(data.size() - 5, data.size() - 1));
+            }
+
         } else {
             // Clear the adapter of previous news feed
             mAdapter.clear();
